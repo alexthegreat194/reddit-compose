@@ -3,6 +3,10 @@ const { PrismaClient } = require('@prisma/client');
 
 module.exports = (app) => {
 
+    app.get('/posts/new', (req, res) => {
+        res.render('posts-new');
+    })
+
     app.post('/posts/new', async (req, res) => {
         console.log('/posts/new', req.body);        
         
