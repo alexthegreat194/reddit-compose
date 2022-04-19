@@ -10,3 +10,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Post {
+  id Int @id @default(autoincrement())
+  title String 
+  url String
+  summary String
+}
