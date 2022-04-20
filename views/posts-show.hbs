@@ -1,0 +1,9 @@
+
+{{#with post}}
+<div class="flex flex-col items-center content-center gap-3 w-full p-10">
+    <h1 class="text-5xl font-semibold">{{title}}</h1>
+    <img src="{{url}}" alt="{{title}}" class="w-full">
+    <p class="text-lg">{{summary}}</p>
+    <a href="/posts/{{id}}/delete" class="border px-2 py-3 bg-red-700 text-white rounded hover:cursor-pointer">Delete</a>
+</div>
+{{/with}}

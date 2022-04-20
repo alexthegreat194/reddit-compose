@@ -37,4 +37,26 @@ module.exports = (app) => {
         res.redirect('/');
     });
 
+    app.get('/posts/:id', async (req, res) => {
+        const prisma = new PrismaClient();
+        const post = await prisma.post.findFirst({
+            where: {
+                id: parseInt(req.params.id)
+            }
+        });
+        // console.log(post);
+        res.render('posts-show', {post});
+    });
+
+    app.get('/posts/:id/delete', async (req, res) => {
+        const prisma = new PrismaClient();
+        // delete post
+        await prisma.post.delete({
+            where: {
+                id: parseInt(req.params.id)
+            }
+        });
+        res.redirect('/')
+    });
+
 };
