@@ -15,7 +15,7 @@ app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 app.get('/', (req, res) => {
-    res.render('home');
+    res.redirect('/posts/index');
 });
 
 require('./controllers/posts')(app);

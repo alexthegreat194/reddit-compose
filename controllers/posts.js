@@ -3,6 +3,13 @@ const { PrismaClient } = require('@prisma/client');
 
 module.exports = (app) => {
 
+    app.get('/posts/index', async (req, res) => {
+        const prisma = new PrismaClient();
+        const posts = await prisma.post.findMany();
+        console.log(posts);
+        res.render('posts-index', {posts})
+    });
+
     app.get('/posts/new', (req, res) => {
         res.render('posts-new');
     })
