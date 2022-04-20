@@ -16,3 +16,9 @@ model Post {
   url String
   summary String
 }
+
+model Comment {
+  id Int @id @default(autoincrement())
+  message String
+  dateTime DateTime @default(now()) 
+}

@@ -6,7 +6,7 @@ module.exports = (app) => {
     app.get('/posts/index', async (req, res) => {
         const prisma = new PrismaClient();
         const posts = await prisma.post.findMany();
-        console.log(posts);
+        // console.log(posts);
         res.render('posts-index', {posts})
     });
 
@@ -15,7 +15,7 @@ module.exports = (app) => {
     })
 
     app.post('/posts/new', async (req, res) => {
-        console.log('/posts/new', req.body);        
+        // console.log('/posts/new', req.body);        
         
         try {
             const prisma = new PrismaClient();
