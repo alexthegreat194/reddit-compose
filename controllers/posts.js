@@ -5,7 +5,7 @@ module.exports = (app) => {
 
     app.get('/posts/index', async (req, res) => {
         const prisma = new PrismaClient();
-        const posts = await prisma.post.findMany();
+        const posts = await prisma.post.findMany({include: {subreddit: true}});
         console.log(posts);
         posts.map(post => console.log(post.subreddit));
         res.render('posts-index', { posts })
@@ -19,7 +19,6 @@ module.exports = (app) => {
         // console.log('/posts/new', req.body);        
         
         try {
-            const prisma = new PrismaClient();
             await prisma.$connect();
 
             let subreddit = await prisma.subreddit.findFirst({
