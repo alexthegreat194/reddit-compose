@@ -6,8 +6,9 @@ module.exports = (app) => {
     app.get('/posts/index', async (req, res) => {
         const prisma = new PrismaClient();
         const posts = await prisma.post.findMany();
-        // console.log(posts);
-        res.render('posts-index', {posts})
+        console.log(posts);
+        posts.map(post => console.log(post.subreddit));
+        res.render('posts-index', { posts })
     });
 
     app.get('/posts/new', (req, res) => {
@@ -20,15 +21,33 @@ module.exports = (app) => {
         try {
             const prisma = new PrismaClient();
             await prisma.$connect();
+
+            let subreddit = await prisma.subreddit.findFirst({
+                where: {
+                    name: req.body.subreddit
+                }
+            });
+            if (!subreddit) {
+                console.log('subreddit not found');
+                subreddit = await prisma.subreddit.create({
+                    data: {
+                        name: req.body.subreddit
+                    }
+                });
+                console.log('subreddit created');
+            }
+
+
             await prisma.post.create({
                 data: {
                     title: req.body.title,
                     url: req.body.url,
-                    summary: req.body. summary,
+                    summary: req.body.summary,
+                    subredditId: subreddit.id,
                 }
             })
-            .then(() => {
-                console.log('Post created');
+            .then((post) => {
+                console.log('Post created: ', post);
             })
         } catch (error) {
             console.log(error);

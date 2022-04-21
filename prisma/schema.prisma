@@ -16,8 +16,8 @@ model Post {
   url String
   summary String
 
-  subredditId Int?
   subreddit Subreddit? @relation(fields: [subredditId], references: [id])
+  subredditId Int?
 }
 
 model Subreddit {
