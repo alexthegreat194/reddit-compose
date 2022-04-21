@@ -79,4 +79,18 @@ module.exports = (app) => {
         res.redirect('/')
     });
 
+    app.get('/n/:subreddit', async (req, res) => {
+        const posts = await prisma.post.findMany({
+            where: {
+                subreddit: {
+                    name: req.params.subreddit
+                }
+            },
+            include: {
+                subreddit: true
+            }
+        });
+        res.render('posts-index', { posts, subreddit: req.params.subreddit });
+    });
+
 };
