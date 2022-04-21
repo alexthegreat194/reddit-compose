@@ -15,10 +15,14 @@ model Post {
   title String 
   url String
   summary String
+
+  subredditId Int?
+  subreddit Subreddit? @relation(fields: [subredditId], references: [id])
 }
 
-model Comment {
+model Subreddit {
   id Int @id @default(autoincrement())
-  message String
-  dateTime DateTime @default(now()) 
+  name String @unique
+
+  posts Post[]
 }
