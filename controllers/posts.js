@@ -1,13 +1,16 @@
 
 const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 module.exports = (app) => {
 
     app.get('/posts/index', async (req, res) => {
-        const prisma = new PrismaClient();
-        const posts = await prisma.post.findMany({include: {subreddit: true}});
-        console.log(posts);
-        posts.map(post => console.log(post.subreddit));
+        
+        const posts = await prisma.post.findMany({
+            include: {
+                subreddit: true
+            }
+        });
         res.render('posts-index', { posts })
     });
 
@@ -19,7 +22,6 @@ module.exports = (app) => {
         // console.log('/posts/new', req.body);        
         
         try {
-            await prisma.$connect();
 
             let subreddit = await prisma.subreddit.findFirst({
                 where: {
@@ -56,10 +58,12 @@ module.exports = (app) => {
     });
 
     app.get('/posts/:id', async (req, res) => {
-        const prisma = new PrismaClient();
         const post = await prisma.post.findFirst({
             where: {
                 id: parseInt(req.params.id)
+            },
+            include: {
+                subreddit: true
             }
         });
         // console.log(post);
@@ -67,8 +71,6 @@ module.exports = (app) => {
     });
 
     app.get('/posts/:id/delete', async (req, res) => {
-        const prisma = new PrismaClient();
-        // delete post
         await prisma.post.delete({
             where: {
                 id: parseInt(req.params.id)
