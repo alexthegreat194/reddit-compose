@@ -10,5 +10,19 @@
     <div class="font-bold text-lg mb-2"><a href="/n/{{subreddit.name}}">/n/{{subreddit.name}}</a></div>
     <p class="text-lg">{{summary}}</p>
     <a href="/posts/{{id}}/delete" class="border px-2 py-3 bg-red-700 text-white rounded hover:cursor-pointer">Delete</a>
+
+    <form action="/comments/new" method="post" class="">
+        <input type="hidden" name="postId" value="{{id}}">
+        <input type="text" name="content" id="content" class="border p-3">
+        <input type="submit" value="Comment" class="border p-3">
+    </form>
+    <div>
+        {{#each comments}}
+        <div class="border p-3">
+            <p class="text-2xl font-semibold">{{content}}</p>
+            <p class="text-xs font-thin">{{createdAt}}</p>
+        </div>
+        {{/each}}
+    </div>
 </div>
 {{/with}}

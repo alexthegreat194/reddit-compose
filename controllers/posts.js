@@ -63,7 +63,8 @@ module.exports = (app) => {
                 id: parseInt(req.params.id)
             },
             include: {
-                subreddit: true
+                subreddit: true,
+                comments: true
             }
         });
         // console.log(post);
