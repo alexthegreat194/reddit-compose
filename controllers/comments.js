@@ -30,7 +30,8 @@ module.exports = (app) => {
         const comments = await prisma.comment.create({
             data: {
                 content: req.body.content,
-                postId: post.id
+                postId: post.id,
+                userId: res.locals.currentUser.id
             }
         })
         
