@@ -11,6 +11,11 @@ const generateHash = async (password) => {
     return passwordHash;
 }
 
+const generateToken = (user) => {
+    const mpJWT = jwt.sign({ id: user.id }, "AUTH-SECRET", { expiresIn: 60*60*24*60 });
+    return mpJWT
+}
+
 module.exports = (app) => {
     
     app.get('/signup', (req, res) => {
@@ -71,6 +76,11 @@ module.exports = (app) => {
             res.redirect('/login')
         }
 
+    });
+
+    app.get('/logout', (req, res) => {
+        res.clearCookie('authToken');
+        res.redirect('/');
     });
 
 }
