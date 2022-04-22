@@ -15,9 +15,13 @@ model Post {
   title   String
   url     String
   summary String
+  createdAt DateTime @default(now())
 
   subreddit Subreddit @relation(fields: [subredditId], references: [id])
   subredditId Int
+
+  user User @relation(fields: [userId], references: [id])
+  userId Int
 
   comments Comment[]
 }
@@ -36,10 +40,16 @@ model Comment {
 
   post Post @relation(fields: [postId], references: [id])
   postId Int
+
+  user User @relation(fields: [userId], references: [id])
+  userId Int
 }
 
 model User {
   id Int @id @default(autoincrement())
   username String @unique
   password String
+
+  posts Post[]
+  comments Comment[]
 }
