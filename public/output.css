@@ -500,6 +500,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   aspect-ratio: 1 / 1;
 }
 
+.h-64 {
+  height: 16rem;
+}
+
 .w-full {
   width: 100%;
 }
@@ -607,6 +611,19 @@ Ensure the default browser behavior of the `hidden` attribute.
 .bg-red-700 {
   --tw-bg-opacity: 1;
   background-color: rgb(185 28 28 / var(--tw-bg-opacity));
+}
+
+.bg-cover {
+  background-size: cover;
+}
+
+.bg-center {
+  background-position: center;
+}
+
+.object-cover {
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .p-5 {
