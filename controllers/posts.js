@@ -8,9 +8,11 @@ module.exports = (app) => {
         
         const posts = await prisma.post.findMany({
             include: {
-                subreddit: true
+                subreddit: true,
+                user: true,
             }
         });
+        console.log(posts);
         res.render('posts-index', { posts })
     });
 
@@ -64,13 +66,18 @@ module.exports = (app) => {
     });
 
     app.get('/posts/:id', async (req, res) => {
+
+        const postId = parseInt(req.params.id);
+        // console.log('postId: ', postId);
+
         const post = await prisma.post.findFirst({
             where: {
-                id: parseInt(req.params.id)
+                id: postId
             },
             include: {
                 subreddit: true,
-                comments: true
+                comments: true,
+                user: true
             }
         });
         // console.log(post);
@@ -83,6 +90,7 @@ module.exports = (app) => {
         }
 
         const postId = parseInt(req.params.id);
+        // console.log('postId:', postId);
 
         const post = await prisma.post.findFirst({
             where: {
@@ -92,25 +100,25 @@ module.exports = (app) => {
 
         if (!post) {
             console.log('post does not exist');
-            res.redirect('/');
-        }
-
-        if (post.userId != res.locals.currentUser.id) {
+            res.redirect('/posts/' + postId);
+        } else if (post.userId != res.locals.currentUser.id) {
             console.log('user does not own post');
             res.redirect('/posts/' + postId);
+            
+        } else {
+            await prisma.post.delete({
+                where: {
+                    id: postId
+                }
+            });
+            await prisma.comment.deleteMany({
+                where: {
+                    postId: postId
+                }
+            });
+            res.redirect('/')
         }
 
-        await prisma.post.delete({
-            where: {
-                id: postId
-            }
-        });
-        await prisma.comment.deleteMany({
-            where: {
-                postId: postId
-            }
-        });
-        res.redirect('/')
     });
 
     app.get('/n/:subreddit', async (req, res) => {

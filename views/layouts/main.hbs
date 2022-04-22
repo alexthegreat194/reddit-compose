@@ -16,6 +16,8 @@
             {{#if currentUser}}
                 <a href="/posts/new" class="text-lg no-underline text-grey-darkest hover:text-blue-dark ml-2">New Posts</a>
                 <a href="/logout" class="text-lg no-underline text-grey-darkest hover:text-blue-dark ml-2">Logout</a>
+                <a href="/" class="text-lg no-underline text-grey-darkest hover:text-blue-dark ml-2">{{currentUser.username}}</a>
+
             {{else}}
                 <a href="/signup" class="text-lg no-underline text-grey-darkest hover:text-blue-dark ml-2">Sign-up</a>
                 <a href="/login" class="text-lg no-underline text-grey-darkest hover:text-blue-dark ml-2">Login</a>
