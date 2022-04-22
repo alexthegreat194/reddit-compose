@@ -50,6 +50,7 @@ module.exports = (app) => {
                     url: req.body.url,
                     summary: req.body.summary,
                     subredditId: subreddit.id,
+                    userId: res.locals.currentUser.id
                 }
             })
             .then((post) => {
@@ -82,6 +83,23 @@ module.exports = (app) => {
         }
 
         const postId = parseInt(req.params.id);
+
+        const post = await prisma.post.findFirst({
+            where: {
+                id: postId
+            }
+        });
+
+        if (!post) {
+            console.log('post does not exist');
+            res.redirect('/');
+        }
+
+        if (post.userId != res.locals.currentUser.id) {
+            console.log('user does not own post');
+            res.redirect('/posts/' + postId);
+        }
+
         await prisma.post.delete({
             where: {
                 id: postId
