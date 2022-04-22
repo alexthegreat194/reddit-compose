@@ -76,7 +76,11 @@ module.exports = (app) => {
             },
             include: {
                 subreddit: true,
-                comments: true,
+                comments: {
+                    include: {
+                        user: true
+                    }
+                },
                 user: true
             }
         });
