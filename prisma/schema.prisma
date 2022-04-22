@@ -18,11 +18,22 @@ model Post {
 
   subreddit Subreddit @relation(fields: [subredditId], references: [id])
   subredditId Int
+
+  comments Comment[]
 }
 
- model Subreddit {
+model Subreddit {
   id   Int    @id @default(autoincrement())
   name String @unique
 
   posts Post[]
+}
+
+model Comment {
+  id      Int    @id @default(autoincrement())
+  content String
+  createdAt DateTime @default(now())
+
+  post Post @relation(fields: [postId], references: [id])
+  postId Int
 }
