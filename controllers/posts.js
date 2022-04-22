@@ -72,9 +72,15 @@ module.exports = (app) => {
     });
 
     app.get('/posts/:id/delete', async (req, res) => {
+        const postId = parseInt(req.params.id);
         await prisma.post.delete({
             where: {
-                id: parseInt(req.params.id)
+                id: postId
+            }
+        });
+        await prisma.comment.deleteMany({
+            where: {
+                postId: postId
             }
         });
         res.redirect('/')
