@@ -1,6 +1,7 @@
 
 const {PrismaClient} = require('@prisma/client')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken');
 
 const prisma = new PrismaClient()
 
@@ -21,13 +22,17 @@ module.exports = (app) => {
         let password = req.body.password;
         let passwordHash = await generateHash(password);
         
-        prisma.user.create({
+        await prisma.user.create({
             data: {
                 username: req.body.username,
                 password: passwordHash
             }
         })
         .then(() => console.log('created user'))
+        .catch((err) => {
+            console.log('error creating user');
+            res.redirect('/signup');
+        })
 
         res.redirect('/');
     });
@@ -36,6 +41,36 @@ module.exports = (app) => {
         res.render('login')
     })
 
+    app.post('/login', async (req, res) => {
     
+        let user = await prisma.user.findFirst({
+            where: {
+                username: req.body.username
+            }
+        })
+        .catch(err => console.log(err))
+
+        if (!user) {
+            console.log('user not found')
+            res.redirect('/login')
+        }
+
+        let password = req.body.password;
+        let passwordHash = user.password;
+        const match = await bcrypt.compare(password, passwordHash)
+        .catch(err => console.log(err))
+
+        if (match) {
+            console.log('password match')
+            const token = generateToken(user);
+            res.cookie('authToken', token);
+            console.log('cookie set')
+            res.redirect('/')
+        } else {
+            console.log('password does not match')
+            res.redirect('/login')
+        }
+
+    });
 
 }
