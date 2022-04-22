@@ -15,11 +15,16 @@ module.exports = (app) => {
     });
 
     app.get('/posts/new', (req, res) => {
+        if (!res.locals.currentUser) {
+            res.redirect('/login')
+        }
         res.render('posts-new');
     })
 
     app.post('/posts/new', async (req, res) => {
-        // console.log('/posts/new', req.body);        
+        if (!res.locals.currentUser) {
+            res.redirect('/login')
+        }     
         
         try {
 
@@ -72,6 +77,10 @@ module.exports = (app) => {
     });
 
     app.get('/posts/:id/delete', async (req, res) => {
+        if (!res.locals.currentUser) {
+            res.redirect('/login')
+        }
+
         const postId = parseInt(req.params.id);
         await prisma.post.delete({
             where: {

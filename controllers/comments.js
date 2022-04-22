@@ -5,6 +5,9 @@ const prisma = new PrismaClient()
 module.exports = (app) => {
 
     app.post('/comments/new', async (req, res) => {
+        if (!res.locals.currentUser) {
+            res.redirect('/login')
+        }
 
         const postId = parseInt(req.body.postId)
 
