@@ -12,7 +12,7 @@ module.exports = (app) => {
                 user: true,
             }
         });
-        console.log(posts);
+        // console.log(posts);
         res.render('posts-index', { posts })
     });
 
@@ -25,8 +25,10 @@ module.exports = (app) => {
 
     app.post('/posts/new', async (req, res) => {
         if (!res.locals.currentUser) {
+            console.log('user not logged in')
             res.redirect('/login')
-        }     
+            return;
+        }
         
         try {
 

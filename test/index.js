@@ -7,6 +7,7 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 const { PrismaClient } = require('@prisma/client');
+const { expect } = require('chai');
 
 // test the /posts/index route with 
 describe('/posts/index', () => {
@@ -22,6 +23,23 @@ describe('/posts/index', () => {
 
 // test the /posts/new route
 describe('/posts/new', () => {
+
+    it('should login with an account', (done) => {
+        chai.request(app)
+            .post('/login')
+            .send({
+                username: 'alex',
+                password: '1234',
+            })
+            .then((res) => {
+                res.should.have.status(200);
+                done();
+            })
+            .catch((err) => {
+                console.log(err);
+                done(err);
+            });
+    });
 
     it('should render the new post form', (done) => {
         chai.request(app)
@@ -44,7 +62,6 @@ describe('/posts/new', () => {
                 res.should.have.status(200);
 
                 const prisma = new PrismaClient();
-                prisma.$connect();
 
                 const post = await prisma.post.findFirst({
                     where: {
@@ -54,7 +71,8 @@ describe('/posts/new', () => {
                 .catch(error => {
                     console.log(error);
                 });
-                post.should.have.property('title', 'Test Post');
+
+                expect(post).to.have.property('title', 'Test Post');
                 
                 // remove the post
                 await prisma.post.delete({
@@ -66,8 +84,8 @@ describe('/posts/new', () => {
                     console.log(error);
                 });
 
-                done();
-            });
+            })
+            .then(() => done());
     });
 
 });
