@@ -43,6 +43,10 @@ model Comment {
 
   user User @relation(fields: [userId], references: [id])
   userId Int
+
+  parentCommentId Int?
+  parentComment Comment? @relation("TeacherStudents", fields: [parentCommentId], references: [id])
+  replies Comment[] @relation("TeacherStudents")
 }
 
 model User {

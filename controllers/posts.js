@@ -80,7 +80,13 @@ module.exports = (app) => {
                 subreddit: true,
                 comments: {
                     include: {
-                        user: true
+                        post: true,
+                        user: true,
+                        replies: {
+                            include: {
+                                user: true
+                            }
+                        },
                     }
                 },
                 user: true

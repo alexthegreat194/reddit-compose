@@ -19,11 +19,47 @@
     </form>
     <div>
         {{#each comments}}
-            <div class="border p-3">
-                <p class="text-2xl font-semibold">{{content}}</p>
-                <p class="text-xs font-thin">{{user.username}}</p>
-                <p class="text-xs font-thin">{{createdAt}}</p>
-            </div>
+            {{#unless parentCommentId}}
+                <div class="border p-3">
+                    <p class="text-2xl font-semibold">{{content}}</p>
+                    <p class="text-xs font-thin">{{user.username}}</p>
+                    <p class="text-xs font-thin">{{createdAt}}</p>
+
+                    <div>
+
+                    </div>
+
+                    <p class="text-xs font-thin">
+                        <span id="comment-{{id}}"
+                            class="hover:text-black hover:cursor-pointer text-blue-600 ">
+                            Reply
+                        </span>
+
+                        <div id="comment-form-{{id}}" class="hidden mt-1">
+                            <form action="/comments/new" method="post" class="">
+                                <input type="hidden" name="postId" value="{{post.id}}">
+                                <input type="hidden" name="parentCommentId" value="{{this.id}}">
+                                <input type="text" name="content" id="content" class="border p-2">
+                                <input type="submit" value="Reply" class="border p-2">
+                            </form>
+                        </div>
+
+                        <script>
+                            document.getElementById("comment-{{id}}").addEventListener("click", function() {
+                                document.getElementById("comment-form-{{id}}").classList.toggle("hidden");
+                            });
+                        </script>
+
+                        {{#each replies}}
+                            <div class="border p-3">
+                                <p class="text-2xl font-semibold">{{content}}</p>
+                                <p class="text-xs font-thin">{{user.username}}</p>
+                                <p class="text-xs font-thin">{{createdAt}}</p>
+                            </div>
+                        {{/each}}
+                    </p>
+                </div>
+            {{/unless}}
         {{/each}}
     </div>
 </div>

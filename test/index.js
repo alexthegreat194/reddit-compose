@@ -51,6 +51,23 @@ describe('/posts/new', () => {
     });
 
     it('should create a new post', (done) => {
+        // before we create a new post, we need to login
+        before(() => {
+            chai.request(app)
+                .post('/login')
+                .send({
+                    username: 'alex',
+                    password: '1234',
+                })
+                .then((res) => {
+                    res.should.have.status(200);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    done(err);
+                });
+        });
+
         chai.request(app)
             .post('/posts/new')
             .send({
@@ -58,7 +75,7 @@ describe('/posts/new', () => {
                 url: 'http://test.com',
                 summary: 'This is a test post'
             })
-            .end(async (err, res) => {
+            .then(async (err, res) => {
                 res.should.have.status(200);
 
                 const prisma = new PrismaClient();
