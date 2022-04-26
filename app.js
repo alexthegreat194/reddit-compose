@@ -71,6 +71,8 @@ require('./controllers/posts')(app, prisma);
 require('./controllers/comments')(app, prisma);
 require('./controllers/auth')(app, prisma);
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`Server started on port ${process.env.PORT || 3000}`);
+});
 
 module.exports = app;
