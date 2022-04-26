@@ -20,7 +20,7 @@ module.exports = (app, prisma) => {
             post.score = post.upvotes - post.downvotes;
         })
         
-        console.log(posts);
+        // console.log(posts);
 
         res.render('posts-index', { posts })
     });
