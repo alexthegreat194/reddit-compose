@@ -45,7 +45,6 @@ app.use(async (req, res, next) => {
       // if a valid JWT token is present
     if (req.user) {
         // Look up the user's record
-        const prisma = new PrismaClient();
         const user = await prisma.user.findFirst({
             where: {
                 id: req.user.id

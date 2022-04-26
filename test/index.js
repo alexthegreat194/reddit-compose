@@ -78,7 +78,6 @@ describe('/posts/new', () => {
             .then(async (err, res) => {
                 res.should.have.status(200);
 
-                const prisma = new PrismaClient();
 
                 const post = await prisma.post.findFirst({
                     where: {

@@ -29,8 +29,6 @@ describe('/signup', () => {
             .then(async (res) => {
                 res.should.have.status(200);
 
-                const prisma = new PrismaClient();
-
                 const user = await prisma.user.findFirst({
                     where: {
                         username: 'test'
