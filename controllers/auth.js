@@ -1,9 +1,7 @@
 
-const {PrismaClient} = require('@prisma/client')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 
-const prisma = new PrismaClient()
 
 const generateHash = async (password) => {
     const passwordHash = await bcrypt.hash(password, 10)
@@ -16,7 +14,7 @@ const generateToken = (user) => {
     return mpJWT
 }
 
-module.exports = (app) => {
+module.exports = (app, prisma) => {
     
     app.get('/signup', (req, res) => {
         res.render('signup.hbs')

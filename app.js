@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const { PrismaClient } = require('@prisma/client');
 require('dotenv').config();
 
+const prisma = new PrismaClient();
+
 const app = express();
 
 app.engine('hbs', engine({
@@ -64,9 +66,9 @@ app.get('/', (req, res) => {
     res.redirect('/posts/index');
 });
 
-require('./controllers/posts')(app);
-require('./controllers/comments')(app);
-require('./controllers/auth')(app);
+require('./controllers/posts')(app, prisma);
+require('./controllers/comments')(app, prisma);
+require('./controllers/auth')(app, prisma);
 
 app.listen(3000);
 

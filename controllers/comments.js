@@ -1,8 +1,5 @@
 
-const { PrismaClient } = require('@prisma/client')
-const prisma = new PrismaClient()
-
-module.exports = (app) => {
+module.exports = (app, prisma) => {
 
     app.post('/comments/new', async (req, res) => {
         if (!res.locals.currentUser) {

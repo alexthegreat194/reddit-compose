@@ -1,8 +1,6 @@
 
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
 
-module.exports = (app) => {
+module.exports = (app, prisma) => {
 
     app.get('/posts/index', async (req, res) => {
         
@@ -10,9 +8,20 @@ module.exports = (app) => {
             include: {
                 subreddit: true,
                 user: true,
+                upvotes: true,
+                downvotes: true,
             }
         });
         // console.log(posts);
+
+        posts.map(post => {
+            post.upvotes = post.upvotes.length;
+            post.downvotes = post.downvotes.length;
+            post.score = post.upvotes - post.downvotes;
+        })
+        
+        console.log(posts);
+
         res.render('posts-index', { posts })
     });
 
@@ -145,6 +154,38 @@ module.exports = (app) => {
             }
         });
         res.render('posts-index', { posts, subreddit: req.params.subreddit });
+    });
+
+    app.put('/posts/:id/upvote', async (req, res) => {
+
+    
+        const postId = parseInt(req.params.id);
+        // console.log('postId:', postId);
+
+        //create un upvote
+        await prisma.upvotes.create({
+            data: {
+                postId: postId,
+            }
+        });
+
+        return res.status(200)
+    });
+
+    app.put('/posts/:id/downvote', async (req, res) => {
+
+    
+        const postId = parseInt(req.params.id);
+        // console.log('postId:', postId);
+
+        //create un downvote
+        await prisma.downvotes.create({
+            data: {
+                postId: postId,
+            }
+        });
+
+        return res.status(200)
     });
 
 };
