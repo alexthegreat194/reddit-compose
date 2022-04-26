@@ -1,6 +1,8 @@
+const { PrismaClient } = require('@prisma/client');
 
+const prisma = new PrismaClient();
 
-module.exports = (app, prisma) => {
+module.exports = (app) => {
 
     app.get('/posts/index', async (req, res) => {
         

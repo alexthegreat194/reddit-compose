@@ -2,7 +2,7 @@ const express = require('express');
 const { engine } = require('express-handlebars');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-const { PrismaClient } = require('@prisma/client');
+
 require('dotenv').config();
 
 const prisma = new PrismaClient();
@@ -73,9 +73,9 @@ app.get('/', (req, res) => {
     res.redirect('/posts/index');
 });
 
-require('./controllers/posts')(app, prisma);
-require('./controllers/comments')(app, prisma);
-require('./controllers/auth')(app, prisma);
+require('./controllers/posts')(app);
+require('./controllers/comments')(app);
+require('./controllers/auth')(app);
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Server started on port ${process.env.PORT || 3000}`);

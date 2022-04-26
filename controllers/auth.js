@@ -1,3 +1,6 @@
+const { PrismaClient } = require('@prisma/client');
+
+const prisma = new PrismaClient();
 
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
@@ -14,7 +17,7 @@ const generateToken = (user) => {
     return mpJWT
 }
 
-module.exports = (app, prisma) => {
+module.exports = (app) => {
     
     app.get('/signup', (req, res) => {
         res.render('signup.hbs')
