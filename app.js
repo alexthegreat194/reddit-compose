@@ -7,8 +7,15 @@ require('dotenv').config();
 
 const prisma = new PrismaClient();
 
-const app = express();
+const connectToDb = async () => {
+    try {
+        await prisma.$connect();
+    } catch (error) {
+        throw error;
+    }
+}
 
+const app = express();
 
 app.engine('hbs', engine({
     extname: 'hbs',
