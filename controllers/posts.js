@@ -81,7 +81,7 @@ module.exports = (app) => {
     app.get('/posts/:id', async (req, res) => {
 
         const postId = parseInt(req.params.id);
-        // console.log('postId: ', postId);
+        console.log('postId: ', postId);
 
         const post = await prisma.post.findFirst({
             where: {
